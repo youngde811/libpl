@@ -22,14 +22,18 @@ LDFLAGS := -L.
 
 PKGNAME := $(PKGDIR)/libpl.deb
 
-.PHONY: all clean ctags etags libpl packages
+MAJOR := libpl.so.1.0.0
+MINOR := libpl.so.1
+BASE := libpl.so
+
+.PHONY: all clean ctags etags libpl lint packages
 
 $(info Building for: [${uname}])
 
 all: libpl packages
 
 libpl: $(LIBNAME)
-packages: libpl $(PKGNAME)
+packages: debian
 
 $(LIBNAME): LDFLAGS += -shared
 $(LIBNAME): $(OBJ)
@@ -38,12 +42,12 @@ $(LIBNAME): $(OBJ)
 $(LIBDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-$(PKGNAME):
+debian: $(PKGNAME) libpl
 	@mkdir -p $(DEBLIB)/usr/lib
 	@mkdir -p $(DEBLIB)/usr/include
 	@mkdir -p $(DEBLIB)/usr/share/doc/libpl
-	@cp $(LIBDIR)/libpl.so.1.0.0 $(DEBLIB)/usr/lib
-	@(cd $(DEBLIB)/usr/lib; ln -fs libpl.so.1.0.0 libpl.so.1; ln -fs libpl.so.1 libpl.so)
+	@cp $(LIBDIR)/$(MAJOR) $(DEBLIB)/usr/lib
+	@(cd $(DEBLIB)/usr/lib; ln -fs $(MAJOR) $(MINOR); ln -fs $(MINOR) $(BASE))
 	@cp $(INCDIR)/libpl.h $(DEBLIB)/usr/include
 	@gzip --best -cn $(DEBDIR)/changelog.Debian > $(DEBLIB)/usr/share/doc/libpl/changelog.Debian.gz
 	@cp $(DEBDIR)/copyright $(DEBLIB)/usr/share/doc/libpl
