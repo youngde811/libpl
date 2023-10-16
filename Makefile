@@ -33,20 +33,24 @@ packages: libpl $(PKGNAME)
 
 $(LIBNAME): LDFLAGS += -shared
 $(LIBNAME): $(OBJ)
-	$(CC) $(LDFLAGS) $^ -Wl,-soname,libpl.so.1 -o $@
+	$(CC) $(LDFLAGS) $^ -Wl,-soname,libpl.so.1 -o $@.1.0.0
 
 $(LIBDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(PKGNAME):
-	mkdir -p $(DEBLIB)/usr/lib
-	mkdir -p $(DEBLIB)/usr/include
-	mkdir -p $(DEBLIB)/usr/share/doc/libpl
-	cp $(LIBDIR)/libpl.so $(DEBLIB)/usr/lib
-	cp $(INCDIR)/libpl.h $(DEBLIB)/usr/include
-	gzip --best -cn $(DEBDIR)/changelog.Debian > $(DEBLIB)/usr/share/doc/libpl/changelog.Debian.gz
-	cp $(DEBDIR)/copyright $(DEBLIB)/usr/share/doc/libpl
-	(cd $(DEBDIR); dpkg-deb --root-owner-group --build libpl)
+	@mkdir -p $(DEBLIB)/usr/lib
+	@mkdir -p $(DEBLIB)/usr/include
+	@mkdir -p $(DEBLIB)/usr/share/doc/libpl
+	@cp $(LIBDIR)/libpl.so.1.0.0 $(DEBLIB)/usr/lib
+	@(cd $(DEBLIB)/usr/lib; ln -fs libpl.so.1.0.0 libpl.so.1; ln -fs libpl.so.1 libpl.so)
+	@cp $(INCDIR)/libpl.h $(DEBLIB)/usr/include
+	@gzip --best -cn $(DEBDIR)/changelog.Debian > $(DEBLIB)/usr/share/doc/libpl/changelog.Debian.gz
+	@cp $(DEBDIR)/copyright $(DEBLIB)/usr/share/doc/libpl
+	@(cd $(DEBDIR); dpkg-deb --root-owner-group --build libpl)
+
+lint: $(PKGNAME)
+	@lintian $(DEBDIR)/libpl.deb
 
 ctags:
 	ctags -R --languages=C .
@@ -55,4 +59,5 @@ etags:
 	etags -R --languages=C .
 
 clean:
-	@rm -rf lib/*.{o,so} packages/*.deb
+	rm -rf lib/*.o lib/*.so $(DEBDIR)/*.deb
+	rm -rf $(DEBLIB)/usr
