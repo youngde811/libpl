@@ -46,4 +46,4 @@ etags:
 	etags -R --languages=C .
 
 clean:
-	@rm -rf lib packages
+	@rm -rf lib/*.{o,so} packages/*.deb
