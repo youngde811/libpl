@@ -1,0 +1,8 @@
+
+Package: libpl
+Version: 0.1-1
+Section: utils
+Priority: optional
+Architecture: aarch64
+Maintainer: David Young <youngde811@pobox.com>
+Description: Libpl is a small wrapper library around the libc getcontext() function, for use with Swift applications.

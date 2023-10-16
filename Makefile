@@ -8,6 +8,8 @@ SRCDIR := src
 INCDIR := include
 LIBDIR := lib
 PKGDIR := packages
+DEBDIR := $(PKGDIR)/debian
+DEBLIB := $(DEBDIR)/libpl
 
 CC := gcc
 CFLAGS := -ansi -pedantic -Wall -Werror -g -I$(INCDIR) -fPIC
@@ -36,8 +38,12 @@ $(LIBNAME): $(OBJ)
 $(LIBDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-$(PKGNAME): 
-	@echo Build the libpl.deb package here
+$(PKGNAME):
+	mkdir -p $(DEBLIB)/usr/lib
+	mkdir -p $(DEBLIB)/usr/include
+	cp $(LIBDIR)/libpl.so $(DEBLIB)/usr/lib
+	cp $(INCDIR)/libpl.h $(DEBLIB)/usr/include
+	(cd $(DEBDIR); dpkg-deb --root-owner-group --build libpl)
 
 ctags:
 	ctags -R --languages=C .
