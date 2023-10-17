@@ -41,7 +41,7 @@ $(LIBNAME): $(OBJ)
 $(LIBDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-debian: $(PKGNAME) libpl
+debian: libpl $(PKGNAME)
 
 $(PKGNAME):
 	@bin/mklibpl
