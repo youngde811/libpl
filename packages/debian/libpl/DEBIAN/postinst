@@ -5,4 +5,3 @@ set -e
 echo "No post-installation tasks required"
 
 exit 0
-
