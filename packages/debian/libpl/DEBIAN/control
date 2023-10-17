@@ -2,8 +2,9 @@
 Package: libpl
 Version: 0.1-1
 Section: utils
+Source: libpl
 Priority: optional
-Architecture: arm64
+Architecture: any
 Maintainer: David Young <youngde811@pobox.com>
 Description: This package contains a small wrapper library
  around the libc getcontext() function, for use with Swift

@@ -1,5 +1,1 @@
-#!/bin/bash
-
 activate-noawait ldconfig
-
-exit $?

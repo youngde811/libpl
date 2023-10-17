@@ -22,9 +22,10 @@ LDFLAGS := -L.
 
 PKGNAME := $(PKGDIR)/libpl.deb
 
-MAJOR := libpl.so.1.0.0
-MINOR := libpl.so.1
+MAJOR := libpl-1.0.0.so
 BASE := libpl.so
+
+LIBNAME := $(LIBDIR)/$(MAJOR)
 
 .PHONY: all clean ctags debian etags libpl lint packages
 
@@ -35,7 +36,7 @@ packages: debian
 
 $(LIBNAME): LDFLAGS += -shared
 $(LIBNAME): $(OBJ)
-	$(CC) $(LDFLAGS) $^ -Wl,-soname,libpl.so.1 -Wl,-rpath=/usr/local/lib -o $@.1.0.0
+	$(CC) $(LDFLAGS) $^ -Wl,-soname,$(MAJOR) -o $@
 
 $(LIBDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<

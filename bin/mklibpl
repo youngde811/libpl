@@ -12,8 +12,7 @@ pkgdir=packages
 debdir=$pkgdir/debian
 deblib=$debdir/libpl
 
-major=libpl.so.1.0.0
-minor=libpl.so.1
+major=libpl-1.0.0.so
 base=libpl.so
 
 usage() {
@@ -51,19 +50,31 @@ _info() {
     return 0
 }
 
+pushd() {
+    command pushd "$@" &>/dev/null
+}
+
+popd() {
+    command popd
+}
+
 mkpackage() {
-    local pkglib=usr/local/lib
-    local pkginc=usr/local/include
-    local pkgshare=usr/local/share/doc/libpl
+    local pkglib=usr/lib/plogic
+    local pkginc=usr/include/plogic
+    local pkgshare=usr/share/doc/plogic/libpl
 
     mkdir -p $deblib/$pkglib $deblib/$pkginc $deblib/$pkgshare
     cp $libdir/$major $deblib/$pkglib
 
     pushd $deblib/$pkglib &> /dev/null
-    ln -fs $major $minor
-    ln -fs $minor $base
+    ln -fs $major $base
+    chmod 644 $base
     popd &> /dev/null
 
+    pushd $deblib &>/dev/null
+    dh_strip
+    popd &> /dev/null
+    
     cp $incdir/libpl.h $deblib/$pkginc
     gzip --best -cn $debdir/changelog.Debian > $deblib/$pkgshare/changelog.Debian.gz
     cp $debdir/copyright $deblib/$pkgshare
