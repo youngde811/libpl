@@ -61,20 +61,16 @@ popd() {
 mkpackage() {
     local pkglib=usr/lib/plogic
     local pkginc=usr/include/plogic
-    local pkgshare=usr/share/doc/plogic/libpl
+    local pkgshare=usr/share/doc/libpl
 
     mkdir -p $deblib/$pkglib $deblib/$pkginc $deblib/$pkgshare
-    cp $libdir/$major $deblib/$pkglib
+    objcopy --strip-debug --strip-unneeded $libdir/$major $deblib/$pkglib/$major
 
     pushd $deblib/$pkglib
     ln -fs $major $base
     chmod 644 $base
     popd
 
-    pushd $deblib
-    dh_strip
-    popd
-    
     cp $incdir/libpl.h $deblib/$pkginc
     gzip --best -cn $debdir/changelog.Debian > $deblib/$pkgshare/changelog.Debian.gz
     cp $debdir/copyright $deblib/$pkgshare
