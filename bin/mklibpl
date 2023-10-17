@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+# This script may be used by our Makefile to build the libpl debian package file.
+
+set -o pipefail -o nounset -e
+
+readonly progname=$(basename $0)
+
+libdir=lib
+incdir=include
+pkgdir=packages
+debdir=$packages/debian
+deblib=$debdir/libpl
+
+major=libpl.so.1.0.0
+minor=libpl.so.1
+base=libpl.so
+
+usage() {
+    cat <<EOF
+Usage: $progname [OPTIONS]
+
+This script may be used by our Makefile to build the libpl debian package file.
+
+Options:
+  -h   Show this message and exit.
+EOF
+
+    exit 1
+}
+
+_error() {
+    local msg="$@"
+
+    >&2 echo "$progname: error: $msg" && exit 1
+}
+
+_warn() {
+    local msg="$@"
+
+    >&2 echo "$progname: warning: $msg"
+
+    return 0
+}
+
+_info() {
+    local msg="$@"
+
+    echo "$progname: info: $msg"
+
+    return 0
+}
+
+mkpackage() {
+    mkdir -p $deblib/usr/lib $deblib/usr/include $deblib/usr/share/doc/libpl
+    cp $libdir/$major $deblib/usr/lib
+
+    pushd $deblib/usr/lib
+    ln -fs $major $minor
+    ln -fs $minor $base
+    popd
+
+    cp $incdir/libpl.h $deblib/usr/include
+    gzip --best -cn $debdir/changelog.Debian > $deblib/usr/share/doc/libpl/changelog.Debian.gz
+    cp $debdir/copyright $deblib/usr/share/doc/libpl
+
+    pushd $debdir
+    dpkg-deb --root-owner-group --build libpl
+    popd
+
+    return 0
+}
+
+# --- main() ----
+
+while getopts "h" opt ; do
+    case $opt in
+        h) usage ;;
+        *) usage ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+mkpackage
+
+exit 0
+
+# -*- mode: shell-script; sh-shell: bash -*-
