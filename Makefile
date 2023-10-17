@@ -43,15 +43,7 @@ $(LIBDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 debian: $(PKGNAME) libpl
-	@mkdir -p $(DEBLIB)/usr/lib
-	@mkdir -p $(DEBLIB)/usr/include
-	@mkdir -p $(DEBLIB)/usr/share/doc/libpl
-	@cp $(LIBDIR)/$(MAJOR) $(DEBLIB)/usr/lib
-	@(cd $(DEBLIB)/usr/lib; ln -fs $(MAJOR) $(MINOR); ln -fs $(MINOR) $(BASE))
-	@cp $(INCDIR)/libpl.h $(DEBLIB)/usr/include
-	@gzip --best -cn $(DEBDIR)/changelog.Debian > $(DEBLIB)/usr/share/doc/libpl/changelog.Debian.gz
-	@cp $(DEBDIR)/copyright $(DEBLIB)/usr/share/doc/libpl
-	@(cd $(DEBDIR); dpkg-deb --root-owner-group --build libpl)
+	@bin/mklibpl
 
 lint: $(PKGNAME)
 	@lintian $(DEBDIR)/libpl.deb
