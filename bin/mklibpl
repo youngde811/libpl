@@ -55,7 +55,7 @@ pushd() {
 }
 
 popd() {
-    command popd
+    command popd &>/dev/null
 }
 
 mkpackage() {
@@ -66,22 +66,22 @@ mkpackage() {
     mkdir -p $deblib/$pkglib $deblib/$pkginc $deblib/$pkgshare
     cp $libdir/$major $deblib/$pkglib
 
-    pushd $deblib/$pkglib &> /dev/null
+    pushd $deblib/$pkglib
     ln -fs $major $base
     chmod 644 $base
-    popd &> /dev/null
+    popd
 
-    pushd $deblib &>/dev/null
+    pushd $deblib
     dh_strip
-    popd &> /dev/null
+    popd
     
     cp $incdir/libpl.h $deblib/$pkginc
     gzip --best -cn $debdir/changelog.Debian > $deblib/$pkgshare/changelog.Debian.gz
     cp $debdir/copyright $deblib/$pkgshare
 
-    pushd $debdir &> /dev/null
+    pushd $debdir
     dpkg-deb --root-owner-group --build libpl
-    popd &> /dev/null
+    popd
 
     return 0
 }
