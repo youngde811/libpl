@@ -9,7 +9,7 @@ readonly progname=$(basename $0)
 libdir=lib
 incdir=include
 pkgdir=packages
-debdir=$packages/debian
+debdir=$pkgdir/debian
 deblib=$debdir/libpl
 
 major=libpl.so.1.0.0
@@ -55,18 +55,18 @@ mkpackage() {
     mkdir -p $deblib/usr/lib $deblib/usr/include $deblib/usr/share/doc/libpl
     cp $libdir/$major $deblib/usr/lib
 
-    pushd $deblib/usr/lib
+    pushd $deblib/usr/lib &> /dev/null
     ln -fs $major $minor
     ln -fs $minor $base
-    popd
+    popd &> /dev/null
 
     cp $incdir/libpl.h $deblib/usr/include
     gzip --best -cn $debdir/changelog.Debian > $deblib/usr/share/doc/libpl/changelog.Debian.gz
     cp $debdir/copyright $deblib/usr/share/doc/libpl
 
-    pushd $debdir
+    pushd $debdir &> /dev/null
     dpkg-deb --root-owner-group --build libpl
-    popd
+    popd &> /dev/null
 
     return 0
 }

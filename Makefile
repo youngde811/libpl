@@ -26,9 +26,7 @@ MAJOR := libpl.so.1.0.0
 MINOR := libpl.so.1
 BASE := libpl.so
 
-.PHONY: all clean ctags etags libpl lint packages
-
-$(info Building for: [${uname}])
+.PHONY: all clean ctags debian etags libpl lint packages
 
 all: libpl packages
 
@@ -43,6 +41,8 @@ $(LIBDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 debian: $(PKGNAME) libpl
+
+$(PKGNAME):
 	@bin/mklibpl
 
 lint: $(PKGNAME)
@@ -55,5 +55,5 @@ etags:
 	etags -R --languages=C .
 
 clean:
-	rm -rf lib/*.o lib/*.so $(DEBDIR)/*.deb
-	rm -rf $(DEBLIB)/usr
+	@rm -rf lib/libpl.o lib/libpl.* $(DEBDIR)/*.deb
+	@rm -rf $(DEBLIB)/usr
