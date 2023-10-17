@@ -1,5 +1,8 @@
 #!/bin/bash
 
-ldconfig -p
+set -e
+
+echo "No post-installation tasks required"
 
 exit 0
+
