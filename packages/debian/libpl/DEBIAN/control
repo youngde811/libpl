@@ -1,6 +1,6 @@
 
 Package: libpl
-Version: 0.1-1
+Version: 1.0-1
 Section: utils
 Source: libpl
 Priority: optional
