@@ -52,17 +52,21 @@ _info() {
 }
 
 mkpackage() {
-    mkdir -p $deblib/usr/lib $deblib/usr/include $deblib/usr/share/doc/libpl
-    cp $libdir/$major $deblib/usr/lib
+    local pkglib=usr/local/lib
+    local pkginc=usr/local/include
+    local pkgshare=usr/local/share/doc/libpl
 
-    pushd $deblib/usr/lib &> /dev/null
+    mkdir -p $deblib/$pkglib $deblib/$pkginc $deblib/$pkgshare
+    cp $libdir/$major $deblib/$pkglib
+
+    pushd $deblib/$pkglib &> /dev/null
     ln -fs $major $minor
     ln -fs $minor $base
     popd &> /dev/null
 
-    cp $incdir/libpl.h $deblib/usr/include
-    gzip --best -cn $debdir/changelog.Debian > $deblib/usr/share/doc/libpl/changelog.Debian.gz
-    cp $debdir/copyright $deblib/usr/share/doc/libpl
+    cp $incdir/libpl.h $deblib/$pkginc
+    gzip --best -cn $debdir/changelog.Debian > $deblib/$pkgshare/changelog.Debian.gz
+    cp $debdir/copyright $deblib/$pkgshare
 
     pushd $debdir &> /dev/null
     dpkg-deb --root-owner-group --build libpl

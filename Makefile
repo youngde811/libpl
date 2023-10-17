@@ -35,7 +35,7 @@ packages: debian
 
 $(LIBNAME): LDFLAGS += -shared
 $(LIBNAME): $(OBJ)
-	$(CC) $(LDFLAGS) $^ -Wl,-soname,libpl.so.1 -o $@.1.0.0
+	$(CC) $(LDFLAGS) $^ -Wl,-soname,libpl.so.1 -Wl,-rpath=/usr/local/lib -o $@.1.0.0
 
 $(LIBDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
