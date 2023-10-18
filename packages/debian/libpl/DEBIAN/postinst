@@ -6,4 +6,6 @@ cat <<EOF > /etc/ld.so.conf.d/plogic.conf
 /usr/lib/plogic
 EOF
 
+ldconfig
+
 exit 0
