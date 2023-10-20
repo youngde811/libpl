@@ -19,6 +19,7 @@
 #include "libpl.h"
 
 #ifdef __ARM_ARCH
+
 int
 activity_create(unsigned long *identifier) {
   ucontext_t ucp;
@@ -30,7 +31,11 @@ activity_create(unsigned long *identifier) {
 
   return rval;
 }
+
 #else
+
+/* We need at least an implementation for AMD64, I think. */
+
 #include <sys/utsname.h>
 
 int
@@ -47,4 +52,5 @@ activity_create(unsigned long *identifier) {
 
   return 0  /* NOTREACHED */
 }
+
 #endif /* __ARM_ARCH */

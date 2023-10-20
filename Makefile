@@ -11,6 +11,7 @@ TESTDIR := test
 PKGDIR := packages
 DEBDIR := $(PKGDIR)/debian
 DEBLIB := $(DEBDIR)/libpl
+PACKAGE := $(DEBLIB)/libpl.deb
 
 CC := gcc
 CFLAGS := -ansi -pedantic -Wall -Werror -g -I$(INCDIR)
@@ -32,15 +33,13 @@ BASE := libpl.so
 
 LIBNAME := $(LIBDIR)/$(MAJOR)
 
-$(info $(TESTOBJ))
-
 .PHONY: all clean ctags debian etags libpl lint packages
 
 all: libpl packages
 
 libpl: $(LIBNAME)
 packages: debian
-test: $(TESTDRIVER)
+test: $(TESTDRIVER) libpl
 
 $(LIBNAME): LDFLAGS += -shared
 $(LIBNAME): $(OBJ)
@@ -72,4 +71,5 @@ etags:
 
 clean:
 	@rm -rf lib/libpl.o lib/libpl.* $(DEBDIR)/*.deb
+	@rm -f $(TESTDIR)/*.o
 	@rm -rf $(DEBLIB)/usr
