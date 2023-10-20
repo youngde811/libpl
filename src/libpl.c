@@ -26,7 +26,7 @@ activity_create(unsigned long *identifier) {
   int rval = 0;
       
   if ((rval = getcontext(&ucp)) == 0) {
-    *identifier = (ucp.uc_mcontext.__sp | ucp.uc_mcontext.__pc);
+    *identifier = ucp.uc_mcontext.__sp;
   }
 
   return rval;

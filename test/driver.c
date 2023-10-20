@@ -33,9 +33,15 @@ frodo() {
   if ((rval = activity_create(&identifier)) != -1) {
     printf("%s: frodo(): identifier: %lu\n", progname, identifier);
   } else {
-    printf("%s: frodo(): failed to retrieve identifier!\n", progname);
+    printf("%s: frodo(): failed to retrieve first identifier!\n", progname);
   }
 
+  if ((rval = activity_create(&identifier)) != -1) {
+    printf("%s: frodo(): this identifier should be the same as above: %lu\n", progname, identifier);
+  } else {
+    printf("%s: frodo(): failed to retrieve second identifier!\n", progname);
+  }
+  
   rval = bilbo();
   
   return rval;

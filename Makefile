@@ -71,5 +71,5 @@ etags:
 
 clean:
 	@rm -rf lib/libpl.o lib/libpl.* $(DEBDIR)/*.deb
-	@rm -f $(TESTDIR)/*.o
+	@rm -f $(TESTDIR)/*.o $(TESTDRIVER)
 	@rm -rf $(DEBLIB)/usr
