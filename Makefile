@@ -13,13 +13,14 @@ DEBDIR := $(PKGDIR)/debian
 DEBLIB := $(DEBDIR)/libpl
 
 CC := gcc
-CFLAGS := -ansi -pedantic -Wall -Werror -g -I$(INCDIR) -fPIC
+CFLAGS := -ansi -pedantic -Wall -Werror -g -I$(INCDIR)
 
 SRC := $(wildcard $(SRCDIR)/*.c)
 OBJ := $(SRC:$(SRCDIR)/%.c=$(LIBDIR)/%.o)
 
-TEST := $(TESTDIR)/driver
-TESTOBJ := $(TESTDIR/%.c=$(TESTDIR)/%.o)
+TEST := $(wildcard $(TESTDIR)/*.c)
+TESTOBJ := $(TEST:$(TESTDIR)/%.c=$(TESTDIR)/%.o)
+TESTDRIVER := $(TESTDIR)/driver
 
 LIBNAME := $(LIBDIR)/libpl.so
 LDFLAGS := -L.
@@ -31,25 +32,28 @@ BASE := libpl.so
 
 LIBNAME := $(LIBDIR)/$(MAJOR)
 
+$(info $(TESTOBJ))
+
 .PHONY: all clean ctags debian etags libpl lint packages
 
 all: libpl packages
 
 libpl: $(LIBNAME)
 packages: debian
-test: $(TEST)
+test: $(TESTDRIVER)
 
 $(LIBNAME): LDFLAGS += -shared
 $(LIBNAME): $(OBJ)
 	$(CC) $(LDFLAGS) $^ -Wl,-soname,$(MAJOR) -o $@
 
+$(LIBDIR): CFLAGS += -fPIC
 $(LIBDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(TESTDIR)/%.o: $(TESTDIR)/%.c
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
-$(TEST): $(TESTOBJ)
+$(TESTDRIVER): $(TESTOBJ)
 	$(CC) -o $@ $< -L/usr/lib/plogic -lpl
 
 debian: libpl $(PKGNAME)

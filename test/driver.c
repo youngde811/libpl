@@ -5,6 +5,7 @@
 
 #include <libgen.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <plogic/libpl.h>
 
@@ -12,27 +13,27 @@ char *progname = NULL;
 
 static int
 frodo() {
-  int rval = 0
+  int rval = 0;
   unsigned long identifier;
 
   if ((rval = activity_create(&identifier)) != -1) {
-    printf("%s: frodo(): identifier: %ul", progname, identifier);
+    printf("%s: frodo(): identifier: %lu", progname, identifier);
   } else {
     printf("%s: frodo(): failed to retrieve identifier!", progname);
   }
 
-  return rval
+  return rval;
 }
 
 int
 main(int argc, char *argv[]) {
-  int rval = 0
+  int rval = 0;
   unsigned long identifier;
 
   progname = basename(argv[0]);
   
   if ((rval = activity_create(&identifier)) != -1) {
-    printf("%s: main(): identifier is %ul\n", progname, identifier);
+    printf("%s: main(): identifier is %lu\n", progname, identifier);
 
     frodo();
   } else {
