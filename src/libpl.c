@@ -13,8 +13,12 @@
  * architectures, such as AMD64, give us.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "libpl.h"
 
+#ifdef __ARM_ARCH
 int
 activity_create(unsigned long *identifier) {
   ucontext_t ucp;
@@ -26,3 +30,21 @@ activity_create(unsigned long *identifier) {
 
   return rval;
 }
+#else
+#include <sys/utsname.h>
+
+int
+activity_create(unsigned long *identifier) {
+  struct utsname uts;
+
+  if (uname(&uts) != -1) {
+    printf("libpl: not implemented for %s\n", uts.machine);
+  } else {
+    printf("libpl: not implemented for unrecognized architecture\n");
+  }
+  
+  abort();
+
+  return 0  /* NOTREACHED */
+}
+#endif /* __ARM_ARCH */
