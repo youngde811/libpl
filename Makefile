@@ -7,6 +7,7 @@ uname := $(shell uname)
 SRCDIR := src
 INCDIR := include
 LIBDIR := lib
+TESTDIR := test
 PKGDIR := packages
 DEBDIR := $(PKGDIR)/debian
 DEBLIB := $(DEBDIR)/libpl
@@ -16,6 +17,9 @@ CFLAGS := -ansi -pedantic -Wall -Werror -g -I$(INCDIR) -fPIC
 
 SRC := $(wildcard $(SRCDIR)/*.c)
 OBJ := $(SRC:$(SRCDIR)/%.c=$(LIBDIR)/%.o)
+
+TEST := $(TESTDIR)/driver
+TESTOBJ := $(TESTDIR/%.c=$(TESTDIR)/%.o)
 
 LIBNAME := $(LIBDIR)/libpl.so
 LDFLAGS := -L.
@@ -33,6 +37,7 @@ all: libpl packages
 
 libpl: $(LIBNAME)
 packages: debian
+test: $(TEST)
 
 $(LIBNAME): LDFLAGS += -shared
 $(LIBNAME): $(OBJ)
@@ -40,6 +45,12 @@ $(LIBNAME): $(OBJ)
 
 $(LIBDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(TESTDIR)/%.o: $(TESTDIR)/%.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+$(TEST): $(TESTOBJ)
+	$(CC) -o $@ $< -L/usr/lib/plogic -lpl
 
 debian: libpl $(PKGNAME)
 
