@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+# This script may be used to build a docker image containing a Swift environment, plus
+# our libpl.deb package.
+
+set -o pipefail -o nounset -e
+
+readonly progname=$(basename $0)
+
+builddir=docker
+image=swift-build:latest
+package=packages/debian/libpl.deb
+
+usage() {
+    cat <<EOF
+Usage: $progname [OPTIONS]
+
+This script may be used to build a docker image containing a Swift environment, plus
+our libpl.deb package.
+
+Options:
+  -h   Show this message and exit.
+EOF
+
+    exit 1
+}
+
+_error() {
+    local msg="$@"
+
+    >&2 echo "$progname: error: $msg" && exit 1
+}
+
+_warn() {
+    local msg="$@"
+
+    >&2 echo "$progname: warning: $msg"
+
+    return 0
+}
+
+_info() {
+    local msg="$@"
+
+    echo "$progname: info: $msg"
+
+    return 0
+}
+
+pushd() {
+    command pushd "$@" &>/dev/null
+}
+
+popd() {
+    command popd &>/dev/null
+}
+
+make_image() {
+    cp $package $builddir
+    
+    pushd $builddir
+    docker build -t $image .
+    popd
+
+    return 0
+}
+
+# --- main() ----
+
+while getopts "h" opt ; do
+    case $opt in
+        h) usage ;;
+        *) usage ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+make_image
+
+exit 0
+
+# -*- mode: shell-script; sh-shell: bash -*-
