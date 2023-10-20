@@ -12,16 +12,32 @@
 char *progname = NULL;
 
 static int
+bilbo() {
+  int rval = 0;
+  unsigned long identifier;
+
+  if ((rval = activity_create(&identifier)) != -1) {
+    printf("%s: bilbo(): identifier: %lu\n", progname, identifier);
+  } else {
+    printf("%s: bilbo(): failed to retrieve identifier!\n", progname);
+  }
+
+  return rval;
+}
+
+static int
 frodo() {
   int rval = 0;
   unsigned long identifier;
 
   if ((rval = activity_create(&identifier)) != -1) {
-    printf("%s: frodo(): identifier: %lu", progname, identifier);
+    printf("%s: frodo(): identifier: %lu\n", progname, identifier);
   } else {
-    printf("%s: frodo(): failed to retrieve identifier!", progname);
+    printf("%s: frodo(): failed to retrieve identifier!\n", progname);
   }
 
+  rval = bilbo();
+  
   return rval;
 }
 
@@ -37,7 +53,7 @@ main(int argc, char *argv[]) {
 
     frodo();
   } else {
-    printf("%s: main(): failed to retrieve identifier!", progname);
+    printf("%s: main(): failed to retrieve identifier!\n", progname);
   }
 
   exit(0);
