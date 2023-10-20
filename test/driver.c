@@ -11,12 +11,20 @@
 
 char *progname = NULL;
 
+#define get_identifier(buf) ({       \
+  int __rval = 0;                    \
+  do {                               \
+    __rval = activity_create((buf)); \
+  } while (0);                       \
+  __rval;                            \
+)}
+
 static int
 bilbo() {
   int rval = 0;
   unsigned long identifier;
 
-  if ((rval = activity_create(&identifier)) != -1) {
+  if ((rval = get_identifier(&identifier)) != -1) {
     printf("%s: bilbo(): identifier: %lu\n", progname, identifier);
   } else {
     printf("%s: bilbo(): failed to retrieve identifier!\n", progname);
@@ -30,13 +38,13 @@ frodo() {
   int rval = 0;
   unsigned long identifier;
 
-  if ((rval = activity_create(&identifier)) != -1) {
+  if ((rval = get_identifier(&identifier)) != -1) {
     printf("%s: frodo(): identifier: %lu\n", progname, identifier);
   } else {
     printf("%s: frodo(): failed to retrieve first identifier!\n", progname);
   }
 
-  if ((rval = activity_create(&identifier)) != -1) {
+  if ((rval = get_identifier(&identifier)) != -1) {
     printf("%s: frodo(): this identifier should be the same as above: %lu\n", progname, identifier);
   } else {
     printf("%s: frodo(): failed to retrieve second identifier!\n", progname);
@@ -54,7 +62,7 @@ main(int argc, char *argv[]) {
 
   progname = basename(argv[0]);
   
-  if ((rval = activity_create(&identifier)) != -1) {
+  if ((rval = get_identifier(&identifier)) != -1) {
     printf("%s: main(): identifier is %lu\n", progname, identifier);
 
     frodo();
