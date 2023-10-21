@@ -6,11 +6,10 @@
  * unique ID, which is very platform-dependent.
  *
  * NB: The technique employed by this library is not reliable. It uses the libc getcontext()
- * function to retrieve stack data, then logically ORs together the stack pointer and program counter,
- * hoping to create a unique ID for any particular stack, regardless of thread. How successful we can
- * be depends much on the definition of ucontext_t, and the information found in its mcontext_t struct.
- * On ARM64, we get some good stuff and can make a reasonable attempt. It remains to be seen what other
- * architectures, such as AMD64, give us.
+ * function to retrieve stack data, then returns the stack pointer as a (hopefully) unique identifier.
+ * How successful we can be depends much on the definition of ucontext_t, and the information found in
+ * its mcontext_t struct. On ARM64, we get some good stuff and can make a reasonable attempt. It remains
+ * to be seen what other architectures, such as AMD64, give us.
  */
 
 #include <stdio.h>
