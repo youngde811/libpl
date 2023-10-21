@@ -8,6 +8,6 @@
 
 #include <ucontext.h>
 
-int activity_create(unsigned long *identifier);
+int getframep(unsigned long *identifier);
 
 #endif  /* _LIBPL_H */

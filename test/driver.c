@@ -11,58 +11,51 @@
 
 char *progname = NULL;
 
-#define get_identifier(buf) activity_create((buf))
+#define get_framep(buf)                                                 \
+  do {                                                                  \
+    if (getframep((buf)) != -1) {                                       \
+      printf("%s: %s: identifier: %lu\n", progname, __FUNCTION__, *buf); \
+    } else {                                                            \
+      printf("%s: %s: failed to retrieve stack pointer!\n", progname, __FUNCTION__); \
+      exit(1);                                                          \
+    }                                                                   \
+  } while(0)                                                            \
 
 static int
 bilbo() {
+  int rval = 0;
   unsigned long identifier;
-  int rval = get_identifier(&identifier);
-  
-  if (rval != -1) {
-    printf("%s: bilbo(): identifier: %lu\n", progname, identifier);
-  } else {
-    printf("%s: bilbo(): failed to retrieve identifier!\n", progname);
-  }
+
+  get_framep(&identifier);
 
   return rval;
 }
 
 static int
 frodo() {
+  int rval = 0;
   unsigned long identifier;
-  int rval = get_identifier(&identifier);
-  
-  if (rval != -1) {
-    printf("%s: frodo(): identifier: %lu\n", progname, identifier);
-  } else {
-    printf("%s: frodo(): failed to retrieve first identifier!\n", progname);
-  }
+
+  get_framep(&identifier);
 
   rval = bilbo();
-  
-  if ((rval = get_identifier(&identifier)) != -1) {
-    printf("%s: frodo(): this identifier should be the same as the first for frodo above: %lu\n", progname, identifier);
-  } else {
-    printf("%s: frodo(): failed to retrieve second identifier!\n", progname);
-  }
+
+  get_framep(&identifier);
+
+  printf("%s: frodo(): the above identifier should be the same as the first for %s above: %lu\n", progname, __FUNCTION__, identifier);
   
   return rval;
 }
 
 int
 main(int argc, char *argv[]) {
-  int rval = 0;
   unsigned long identifier;
 
   progname = basename(argv[0]);
-  
-  if ((rval = get_identifier(&identifier)) != -1) {
-    printf("%s: main(): identifier is %lu\n", progname, identifier);
 
-    frodo();
-  } else {
-    printf("%s: main(): failed to retrieve identifier!\n", progname);
-  }
+  get_framep(&identifier);
+
+  frodo();
 
   exit(0);
 }

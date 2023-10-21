@@ -21,7 +21,7 @@
 #ifdef __ARM_ARCH
 
 int
-activity_create(unsigned long *identifier) {
+getframep(unsigned long *identifier) {
   ucontext_t ucp;
   int rval = 0;
       
@@ -39,7 +39,7 @@ activity_create(unsigned long *identifier) {
 #include <sys/utsname.h>
 
 int
-activity_create(unsigned long *identifier) {
+getframep(unsigned long *identifier) {
   struct utsname uts;
 
   if (uname(&uts) != -1) {
