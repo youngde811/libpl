@@ -15,7 +15,7 @@ DEBLIB := $(DEBDIR)/libpl
 PACKAGE := $(DEBLIB)/libpl.deb
 
 CC := gcc
-CFLAGS := -ansi -Wall -Werror -g -I$(INCDIR)
+CFLAGS := -ansi -g -I$(INCDIR)
 
 SRC := $(wildcard $(SRCDIR)/*.c)
 OBJ := $(SRC:$(SRCDIR)/%.c=$(LIBDIR)/%.o)

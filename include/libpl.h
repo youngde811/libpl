@@ -8,6 +8,6 @@
 
 #include <ucontext.h>
 
-int getframep(unsigned long *identifier);
+int getframep(unsigned long *current, unsigned long *parent);
 
 #endif  /* _LIBPL_H */

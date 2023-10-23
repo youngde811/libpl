@@ -14,21 +14,21 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 #include "libpl.h"
 
-#ifdef __ARM_ARCH
+#if __ARM_ARCH
 
 int
-getframep(unsigned long *identifier) {
-  ucontext_t ucp;
-  int rval = 0;
-      
-  if ((rval = getcontext(&ucp)) == 0) {
-    *identifier = ucp.uc_mcontext.__sp;
-  }
+getframep(unsigned long *current, unsigned long *parent) {
+  void *fp = __builtin_extract_return_addr(__builtin_frame_address(0));
+  void *pfp = __builtin_extract_return_addr(__builtin_frame_address(1));
 
-  return rval;
+  *current = (unsigned long) fp;
+  *parent = (unsigned long) pfp;
+  
+  return 0;
 }
 
 #else

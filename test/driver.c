@@ -11,10 +11,10 @@
 
 char *progname = NULL;
 
-#define get_framep(buf)                                                 \
+#define get_framep(tbuf, pbuf)                                               \
   do {                                                                  \
-    if (getframep((buf)) != -1) {                                       \
-      printf("%s: %s: identifier: %lu\n", progname, __FUNCTION__, *buf); \
+    if (getframep((tbuf), (pbuf)) != -1) {                              \
+      printf("%s: %s: this: %lu; parent: %lu\n", progname, __FUNCTION__, (*tbuf), (*pbuf)); \
     } else {                                                            \
       printf("%s: %s: failed to retrieve stack pointer!\n", progname, __FUNCTION__); \
       exit(1);                                                          \
@@ -24,9 +24,10 @@ char *progname = NULL;
 static int
 bilbo() {
   int rval = 0;
-  unsigned long identifier;
+  unsigned long this;
+  unsigned long parent;
 
-  get_framep(&identifier);
+  get_framep(&this, &parent);
 
   return rval;
 }
@@ -34,15 +35,16 @@ bilbo() {
 static int
 frodo() {
   int rval = 0;
-  unsigned long identifier;
+  unsigned long this;
+  unsigned long parent;
 
-  get_framep(&identifier);
+  get_framep(&this, &parent);
 
   rval = bilbo();
 
-  get_framep(&identifier);
+  get_framep(&this, &parent);
 
-  printf("%s: frodo(): the above identifier should be the same as the first for %s above: %lu\n", progname, __FUNCTION__, identifier);
+  printf("%s: frodo(): the above frames should be the same as the first for %s above: %lu:%lu\n", progname, __FUNCTION__, this, parent);
   
   return rval;
 }
@@ -52,8 +54,6 @@ main(int argc, char *argv[]) {
   unsigned long identifier;
 
   progname = basename(argv[0]);
-
-  get_framep(&identifier);
 
   frodo();
 
