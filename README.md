@@ -15,4 +15,4 @@ Swift believes it knows best. It doesn't.
 
 ## Author ##
 
-[David E. Young](bosshog@passivelogic.com)
+[David E. Young](youngde811@pobox.com)
