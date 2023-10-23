@@ -17,7 +17,7 @@
 
 #include "libpl.h"
 
-#if __ARM_ARCH
+#if __GNUC__
 
 int
 getframep(unsigned long *current, unsigned long *parent) {
@@ -32,23 +32,8 @@ getframep(unsigned long *current, unsigned long *parent) {
 
 #else
 
-/* We need at least an implementation for AMD64, I think. */
+/* Only GNU gcc is supported as a compiler, due to the system-level builtin functions we must use */
 
-#include <sys/utsname.h>
+#error "libpl.c: *** Only GNU's gcc compiler is supported, due to the need for system-level builtin functions ***"
 
-int
-getframep(unsigned long *identifier) {
-  struct utsname uts;
-
-  if (uname(&uts) != -1) {
-    printf("libpl: not implemented for %s\n", uts.machine);
-  } else {
-    printf("libpl: not implemented for unrecognized architecture\n");
-  }
-  
-  abort();
-
-  return 0  /* NOTREACHED */
-}
-
-#endif /* __ARM_ARCH */
+#endif /* __GNUC__ */
