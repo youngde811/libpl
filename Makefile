@@ -3,6 +3,7 @@
 # with Swift on Linux. At present, only Debian-based distributions are supported.
 
 uname := $(shell uname)
+arch := $(shell uname -m)
 
 SRCDIR := src
 INCDIR := include
@@ -23,10 +24,11 @@ TEST := $(wildcard $(TESTDIR)/*.c)
 TESTOBJ := $(TEST:$(TESTDIR)/%.c=$(TESTDIR)/%.o)
 TESTDRIVER := $(TESTDIR)/driver
 
-LIBNAME := $(LIBDIR)/libpl.so
 LDFLAGS := -L.
 
-PKGNAME := $(PKGDIR)/libpl.deb
+ifeq ($(arch), aarch64)
+PKGNAME := $(PKGDIR)/libpl-arm64.deb
+endif
 
 MAJOR := libpl-1.0.0.so
 BASE := libpl.so

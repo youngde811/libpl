@@ -6,10 +6,10 @@ FROM swift:focal
 
 USER root
 
-RUN apt update && apt install -y emacs build-essential devscripts debhelper dh-make
+RUN apt update && apt install -y emacs build-essential devscripts debhelper dh-make dpkg-dev
 RUN mkdir /root/telemetry
 
-COPY libpl.deb /root/telemetry
+COPY libpl_1.0-1_arm64.deb /root/telemetry
 
-RUN dpkg --install /root/telemetry/libpl.deb
+RUN dpkg --install /root/telemetry/libpl_1.0-1_arm64.deb
 
