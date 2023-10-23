@@ -3,13 +3,16 @@
 # This script may be used to build a docker image containing a Swift environment, plus
 # our libpl.deb package.
 
+# NB: We need to abstract the Debian package name such that it isn't replicated in multiple
+# locations. Also, different architectures must be supported.
+
 set -o pipefail -o nounset -e
 
 readonly progname=$(basename $0)
 
 builddir=docker
 image=swift-build:latest
-package=packages/debian/libpl.deb
+package=packages/debian/libpl_1.0-1_arm64.deb
 
 usage() {
     cat <<EOF
