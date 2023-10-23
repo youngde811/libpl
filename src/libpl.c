@@ -5,11 +5,11 @@
  * analog to Apple's library for Linux; rather, we're left with trying to create a stack-local
  * unique ID, which is very platform-dependent.
  *
- * NB: The technique employed by this library is not reliable. It uses the libc getcontext()
- * function to retrieve stack data, then returns the stack pointer as a (hopefully) unique identifier.
- * How successful we can be depends much on the definition of ucontext_t, and the information found in
- * its mcontext_t struct. On ARM64, we get some good stuff and can make a reasonable attempt. It remains
- * to be seen what other architectures, such as AMD64, give us.
+ * NB: The technique employed by this library is not portable, or even reliable on certain machines.
+ * It uses gcc builtin functions to retrieve the current and parent stack frame addresses, documented
+ * here: https://gcc.gnu.org/onlinedocs/gcc/Return-Address.html.
+ * How successful we can be depends much on the platform architecture. On ARM64 we get good values.
+ * It remains to be seen what other architectures, such as AMD64, give us.
  */
 
 #include <stdio.h>
