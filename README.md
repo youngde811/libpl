@@ -5,7 +5,7 @@ Libpl is thin C veneer over the libc _getcontext()_ function, intended for use w
 port of _opentelemetry-swift_ from Apple to Linux). The necessity for this library arises from two conditions:
 
 - The need to emulate, as much as possible, some aspects of the Apple _os.activity_ library. I'll leave its description
-to the reader's own devices; however, _opentelemetry-swift_requires the ability to assign unique identifiers to tasks
+to the reader's own devices; however, _opentelemetry-swift_ requires the ability to assign unique identifiers to tasks
 when they create spans, all without having to carry around these identifiers to different parts of both the library and
 client code.
 - The restriction Swift places on using _getcontext()_ directly; it believes that the aforementioned function always
