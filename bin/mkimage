@@ -10,9 +10,10 @@ set -o pipefail -o nounset -e
 
 readonly progname=$(basename $0)
 
-builddir=docker
-image=swift-build:latest
-package=packages/debian/libpl_1.0-1_arm64.deb
+readonly arch=$(uname -m)
+readonly builddir=docker
+readonly image=swift-build:latest
+readonly package=packages/debian/libpl_1.0-1_${arch}.deb
 
 usage() {
     cat <<EOF
@@ -59,10 +60,12 @@ popd() {
 }
 
 make_image() {
+    local dockerfile="Dockerfile_$arch"
+    
     cp $package $builddir
     
     pushd $builddir
-    docker build -t $image .
+    docker build -f $dockerfile -t $image .
     popd
 
     return 0
