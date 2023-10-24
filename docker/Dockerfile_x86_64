@@ -1,19 +1,21 @@
 # -*- mode: Dockerfile -*-
 
-# This Dockerfile may be used to create an Ubuntu 22.04 image, configured for Swift development.
-# From this file's home directory, run: docker build -t swift-build:latest .
+# This Dockerfile may be used to create an Ubuntu 22.04 x86_64 image, configured for Swift
+# development and with our new Libpl library, that offers an attempt to emulate small parts
+# of Apple's os.activity library, which is required by opentelemetry-swift.
+#
+# From this file's home directory, run: docker build -f Dockerfile_x86_64 -t swift-build_x86_64.
 
 FROM --platform=linux/x86_64 swift:focal
 
 USER root
-ARG arch
 
 RUN apt update && apt install -y emacs build-essential devscripts debhelper dh-make dpkg-dev
 RUN mkdir /root/telemetry
 
 COPY libpl_1.0-1_x86_64.deb /root/telemetry
 
-# This --force-architecture flag is need here because, of course, MacOS uses a different
-# virtualization method with docker containers.
+# This --force-architecture flag is needed here because, of course, MacOS uses a different
+# virtualization method with docker containers. Apple just HAS to be different...
 
 RUN dpkg --install --force-architecture /root/telemetry/libpl_1.0-1_x86_64.deb

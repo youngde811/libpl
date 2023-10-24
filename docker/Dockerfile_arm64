@@ -1,12 +1,14 @@
 #-*- mode: Dockerfile -*-
 
-# This Dockerfile may be used to create an Ubuntu 22.04 image, configured for Swift development.
-# From this file's home directory, run: docker build -t swift-build:latest .
+# This Dockerfile may be used to create an Ubuntu 22.04 arm64 image, configured for Swift
+# development and with our new Libpl library, that offers an attempt to emulate small parts
+# of Apple's os.activity library, which is required by opentelemetry-swift.
+#
+# From this file's home directory, run: docker build -f Dockerfile_arm64 -t swift-build_arm64.
 
 FROM --platform=linux/aarch64 swift:focal
 
 USER root
-ARG arch
 
 RUN apt update && apt install -y emacs build-essential devscripts debhelper dh-make dpkg-dev
 RUN mkdir /root/telemetry
