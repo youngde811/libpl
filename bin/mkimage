@@ -11,7 +11,6 @@ set -o pipefail -o nounset -e
 readonly progname=$(basename $0)
 
 readonly builddir=docker
-readonly image=swift-build:latest
 
 arch=$(uname -m)
 
