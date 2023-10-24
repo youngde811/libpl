@@ -12,4 +12,8 @@ RUN apt update && apt install -y emacs build-essential devscripts debhelper dh-m
 RUN mkdir /root/telemetry
 
 COPY libpl_1.0-1_x86_64.deb /root/telemetry
-RUN dpkg --install /root/telemetry/libpl_1.0-1_x86_64.deb
+
+# This --force-architecture flag is need here because, of course, MacOS uses a different
+# virtualization method with docker containers.
+
+RUN dpkg --install --force-architecture /root/telemetry/libpl_1.0-1_x86_64.deb

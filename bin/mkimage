@@ -63,6 +63,7 @@ popd() {
 make_image() {
     local dockerfile="Dockerfile_$arch"
     local package="packages/debian/libpl_1.0-1_${arch}.deb"
+    local image="swift-build_${arch}:latest"
     
     cp $package $builddir
     
