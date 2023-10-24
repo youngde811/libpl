@@ -62,6 +62,7 @@ mkpackage() {
     local pkglib=usr/lib/plogic
     local pkginc=usr/include/plogic
     local pkgshare=usr/share/doc/libpl
+    local arch=$(uname -m)
 
     mkdir -p $deblib/$pkglib $deblib/$pkginc $deblib/$pkgshare
     objcopy --strip-debug --strip-unneeded $libdir/$major $deblib/$pkglib/$major
@@ -77,7 +78,7 @@ mkpackage() {
 
     pushd $debdir
     dpkg-deb --root-owner-group --build libpl
-    dpkg-name libpl.deb
+    mv libpl.deb libpl_1.0-1_$arch.deb
     popd
 
     return 0

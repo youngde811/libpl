@@ -30,6 +30,12 @@ ifeq ($(arch), aarch64)
 PKGNAME := $(PKGDIR)/libpl-arm64.deb
 endif
 
+$(info Architecture is: $(arch))
+
+ifeq ($(arch), x86_64)
+PKGNAME := $(PKGDIR)/libpl-x86_64.deb
+endif
+
 MAJOR := libpl-1.0.0.so
 BASE := libpl.so
 
