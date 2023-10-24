@@ -12,7 +12,8 @@ TESTDIR := test
 PKGDIR := packages
 DEBDIR := $(PKGDIR)/debian
 DEBLIB := $(DEBDIR)/libpl
-PACKAGE := $(DEBLIB)/libpl.deb
+
+VERSION := 1.0-1
 
 CC := gcc
 CFLAGS := -ansi -g -I$(INCDIR)
@@ -27,14 +28,15 @@ TESTDRIVER := $(TESTDIR)/driver
 LDFLAGS := -L.
 
 ifeq ($(arch), aarch64)
-PKGNAME := $(PKGDIR)/libpl-arm64.deb
+PKGNAME := $(DEBDIR)/libpl_$(VERSION)_arm64.deb
+endif
+
+ifeq ($(arch), x86_64)
+PKGNAME := $(DEBDIR)/libpl_$(VERSION)_x86_64.deb
 endif
 
 $(info Architecture is: $(arch))
-
-ifeq ($(arch), x86_64)
-PKGNAME := $(PKGDIR)/libpl-x86_64.deb
-endif
+$(info Package name is: $(PKGNAME))
 
 MAJOR := libpl-1.0.0.so
 BASE := libpl.so
@@ -46,7 +48,7 @@ LIBNAME := $(LIBDIR)/$(MAJOR)
 all: libpl packages
 
 libpl: $(LIBNAME)
-packages: debian
+packages: $(PKGNAME)
 test: $(TESTDRIVER) libpl
 
 $(LIBNAME): LDFLAGS += -shared
@@ -65,7 +67,7 @@ $(TESTDRIVER): $(TESTOBJ)
 
 debian: libpl $(PKGNAME)
 
-$(PKGNAME):
+$(PKGNAME): libpl
 	@bin/mklibpl
 
 lint: $(PKGNAME)
@@ -78,6 +80,6 @@ etags:
 	etags -R --languages=C .
 
 clean:
-	@rm -rf lib/libpl.o lib/libpl.* $(DEBDIR)/*.deb
+	@rm -rf lib/libpl.*
 	@rm -f $(TESTDIR)/*.o $(TESTDRIVER)
 	@rm -rf $(DEBLIB)/usr

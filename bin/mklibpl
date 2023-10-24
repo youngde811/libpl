@@ -64,6 +64,8 @@ mkpackage() {
     local pkgshare=usr/share/doc/libpl
     local arch=$(uname -m)
 
+    echo "$progname: mkpackage()"
+
     mkdir -p $deblib/$pkglib $deblib/$pkginc $deblib/$pkgshare
     objcopy --strip-debug --strip-unneeded $libdir/$major $deblib/$pkglib/$major
 
