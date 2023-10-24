@@ -10,10 +10,10 @@ set -o pipefail -o nounset -e
 
 readonly progname=$(basename $0)
 
-readonly arch=$(uname -m)
 readonly builddir=docker
 readonly image=swift-build:latest
-readonly package=packages/debian/libpl_1.0-1_${arch}.deb
+
+arch=$(uname -m)
 
 usage() {
     cat <<EOF
@@ -23,7 +23,8 @@ This script may be used to build a docker image containing a Swift environment, 
 our libpl.deb package.
 
 Options:
-  -h   Show this message and exit.
+  -a ARCH  Build the image for ARCH. Default is $arch.
+  -h       Show this message and exit.
 EOF
 
     exit 1
@@ -61,6 +62,7 @@ popd() {
 
 make_image() {
     local dockerfile="Dockerfile_$arch"
+    local package="packages/debian/libpl_1.0-1_${arch}.deb"
     
     cp $package $builddir
     
@@ -73,8 +75,9 @@ make_image() {
 
 # --- main() ----
 
-while getopts "h" opt ; do
+while getopts "a:h" opt ; do
     case $opt in
+        a) arch=$OPTARG ;;
         h) usage ;;
         *) usage ;;
     esac
