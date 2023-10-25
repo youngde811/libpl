@@ -18,4 +18,5 @@ COPY libpl_1.0-1_x86_64.deb /root/telemetry
 # This --force-architecture flag is needed here because, of course, MacOS uses a different
 # virtualization method with docker containers. Apple just HAS to be different...
 
+RUN dpkg --remove libpl
 RUN dpkg --install --force-architecture /root/telemetry/libpl_1.0-1_x86_64.deb
