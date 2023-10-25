@@ -11,9 +11,9 @@
 
 char *progname = NULL;
 
-#define get_framep(tbuf, pbuf)                                               \
+#define get_context_ids(tbuf, pbuf)                                               \
   do {                                                                  \
-    if (getframep((tbuf), (pbuf)) != -1) {                              \
+    if (get_context((tbuf), (pbuf)) != -1) {                              \
       printf("%s: %s: this: %lu; parent: %lu\n", progname, __FUNCTION__, (*tbuf), (*pbuf)); \
     } else {                                                            \
       printf("%s: %s: failed to retrieve stack pointer!\n", progname, __FUNCTION__); \
@@ -27,7 +27,7 @@ bilbo() {
   unsigned long this;
   unsigned long parent;
 
-  get_framep(&this, &parent);
+  get_context_ids(&this, &parent);
 
   return rval;
 }
@@ -38,11 +38,11 @@ frodo() {
   unsigned long this;
   unsigned long parent;
 
-  get_framep(&this, &parent);
+  get_context_ids(&this, &parent);
 
   rval = bilbo();
 
-  get_framep(&this, &parent);
+  get_context_ids(&this, &parent);
 
   printf("%s: frodo(): the above frames should be the same as the first for %s above: %lu:%lu\n", progname, __FUNCTION__, this, parent);
   

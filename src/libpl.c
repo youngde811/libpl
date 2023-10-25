@@ -32,7 +32,7 @@ _getframep(unsigned long *current, unsigned long *parent) {
 }
 
 int
-getframep(unsigned long *current, unsigned long *parent) {
+get_context(unsigned long *current, unsigned long *parent) {
   pthread_t tid = pthread_self();
 
   *current = (unsigned long) tid;
