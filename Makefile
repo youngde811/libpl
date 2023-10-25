@@ -1,6 +1,8 @@
 
-# This Makefile may be used to build libpl, a thin veneer over the libc getcontext() function, for use
-# with Swift on Linux. At present, only Debian-based distributions are supported.
+# This Makefile may be used to build libpl, a system-level library that attempts to
+# provide some of the capabilities of Apple's os.activity library, upon which
+# opentelemetry-swift depends. At present, only Debian-based Linux distributions
+# are supported.
 
 uname := $(shell uname)
 arch := $(shell uname -m)
@@ -36,7 +38,6 @@ PKGNAME := $(DEBDIR)/libpl_$(VERSION)_x86_64.deb
 endif
 
 $(info Architecture is: $(arch))
-$(info Package name is: $(PKGNAME))
 
 MAJOR := libpl-1.0.0.so
 BASE := libpl.so

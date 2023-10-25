@@ -12,6 +12,7 @@
  * It remains to be seen what other architectures, such as AMD64, give us.
  */
 
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -20,13 +21,23 @@
 #if __GNUC__
 
 int
-getframep(unsigned long *current, unsigned long *parent) {
+_getframep(unsigned long *current, unsigned long *parent) {
   void *fp = __builtin_extract_return_addr(__builtin_frame_address(0));
   void *pfp = __builtin_extract_return_addr(__builtin_frame_address(1));
 
   *current = (unsigned long) fp;
   *parent = (unsigned long) pfp;
   
+  return 0;
+}
+
+int
+getframep(unsigned long *current, unsigned long *parent) {
+  pthread_t tid = pthread_self();
+
+  *current = (unsigned long) tid;
+  *parent = (unsigned long) tid;
+
   return 0;
 }
 
