@@ -6,7 +6,7 @@
 #
 # From this file's home directory, run: docker build -f Dockerfile_x86_64 -t swift-build_x86_64.
 
-FROM --platform=linux/x86_64 swift:focal
+FROM --platform=linux/x86_64 swift:jammy
 
 USER root
 
