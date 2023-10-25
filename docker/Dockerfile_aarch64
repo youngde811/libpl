@@ -13,5 +13,5 @@ USER root
 RUN apt update && apt install -y emacs build-essential devscripts debhelper dh-make dpkg-dev
 RUN mkdir /root/telemetry
 
-COPY libpl_1.0-1_aarch.deb /root/telemetry
-RUN dpkg --install /root/telemetry/libpl_1.0-1_aarch64.deb
+COPY libpl_1.0-1_aarch64.deb /root/telemetry
+RUN dpkg --remove libpl &> /dev/null && dpkg --install /root/telemetry/libpl_1.0-1_aarch64.deb
