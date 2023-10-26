@@ -19,7 +19,7 @@ other compilers are supported.
 
 You should be able to use the Swift Package Manager (SPM) to import _Libpl_ into your Swift application or library. For
 an example of how to assemble a Swift system library, please see the [CLibpl](https://github.com/youngde811/CLibpl)
-project. To see how *CLibpl* is imported and Swift application, see our [opentelemetry-swift](https://github.com/youngde811/opentelemetry-swift)
+project. To see how *CLibpl* is imported into a Swift application, see our [opentelemetry-swift](https://github.com/youngde811/opentelemetry-swift)
 fork; any of this project's _Package.swift_ files (yeah, there are several) will show you.
 
 ### Example Package.swift ###
@@ -36,6 +36,13 @@ Next, add the _CLibpl_ package as a target dependency:
   ]
 ),
 ```
+
+## Caveat Emptor ##
+
+I cannot stress enough that _Libpl_ is an educated attempt at offering some measure of support for _os.activity_
+identifiers. This library should be considered experimental, and is very likely to prove insufficient for certain use
+cases. A more thorough implementation will require research of both _os.activity_, and quite possibly Linux kernel
+capabilities.
 
 ## Author ##
 
