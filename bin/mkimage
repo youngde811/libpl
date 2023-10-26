@@ -62,14 +62,14 @@ popd() {
 }
 
 make_image() {
-    local dockerfile="Dockerfile_$pkgarch"
+    local dockerfile="Dockerfile"
     local package="packages/debian/libpl_1.0-1_${pkgarch}.deb"
     local image="swift-build_${pkgarch}:latest"
     
     cp $package $builddir
     
     pushd $builddir
-    docker build -f $dockerfile -t $image .
+    docker build -f $dockerfile --platform=linux/$pkgarch --build-arg arch=$pkgarch -t $image .
     popd
 
     return 0

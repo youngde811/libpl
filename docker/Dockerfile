@@ -6,13 +6,14 @@
 #
 # From this file's home directory, run: docker build -f Dockerfile_arm64 -t swift-build_arm64.
 
-FROM --platform=linux/aarch64 swift:focal
+FROM swift:focal
 
+ARG arch=aarch64
 USER root
 
 RUN apt update && apt install -y emacs build-essential devscripts debhelper dh-make dpkg-dev
 RUN mkdir /root/telemetry
 
-COPY libpl_1.0-1_aarch64.deb /root/telemetry
+COPY libpl_1.0-1_${arch}.deb /root/telemetry
 RUN dpkg --remove libpl &> /dev/null
-RUN dpkg --install /root/telemetry/libpl_1.0-1_aarch64.deb
+RUN dpkg --install --force-architecture /root/telemetry/libpl_1.0-1_${arch}.deb
