@@ -6,7 +6,7 @@
 #
 # From this file's home directory, run: docker build -f Dockerfile_arm64 -t swift-build_arm64.
 
-FROM swift:focal
+FROM swift:latest
 
 ARG arch=aarch64
 USER root
