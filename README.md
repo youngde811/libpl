@@ -37,6 +37,15 @@ Next, add the _CLibpl_ package as a target dependency:
 ),
 ```
 
+Then, make sure your project links with _libpl.so_. For example, if you're using a Makefile the following is a good
+example:
+
+```
+link_flags := -Xlinker -L/usr/lib/plogic -Xlinker -lpl
+...
+$(SWIFT) build -v $(CC_FLAGS) $(LINKER_FLAGS) $(SWIFTC_FLAGS) $(SWIFT_FLAGS) --product $(build_target) $(link_flags)
+```
+
 ## Caveat Emptor ##
 
 I cannot stress enough that _Libpl_ is an educated attempt at offering some measure of support for _os.activity_
