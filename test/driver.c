@@ -11,9 +11,9 @@
 
 char *progname = NULL;
 
-#define get_context_ids(tbuf, pbuf)                                               \
+#define get_context_ids(tbuf, pbuf)                                     \
   do {                                                                  \
-    if (get_context((tbuf), (pbuf)) != -1) {                              \
+    if (get_context((tbuf), (pbuf)) != -1) {                            \
       printf("%s: %s: this: %lu; parent: %lu\n", progname, __FUNCTION__, (*tbuf), (*pbuf)); \
     } else {                                                            \
       printf("%s: %s: failed to retrieve stack pointer!\n", progname, __FUNCTION__); \
