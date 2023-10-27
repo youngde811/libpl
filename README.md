@@ -41,8 +41,12 @@ Next, add the _CLibpl_ package as a target dependency:
 
 I cannot stress enough that _Libpl_ is an educated attempt at offering some measure of support for _os.activity_
 identifiers. This library should be considered experimental, and is very likely to prove insufficient for certain use
-cases. A more thorough implementation will require research of both _os.activity_, and quite possibly Linux kernel
-capabilities.
+cases (eg. in the presence of Swift Tasks). A more thorough implementation will require research of both _os.activity_,
+and quite possibly Linux kernel capabilities.
+
+On a more positive note, since Linux has no notion of activities, _Libpl_ will most likely be very useful unless Swift
+Tasks are being heavily used. Even in that case, if a task does not span multiple threads then _Libpl_ should still
+prove useful.
 
 ## Author ##
 
