@@ -1,6 +1,7 @@
 
 /*
- * This is a small driver to ensure our library functions as expected.
+ * This is a small driver to ensure our library functions as expected. I need to add thread
+ * support to more fully exercise our stuff.
  */
 
 #include <libgen.h>
@@ -51,8 +52,6 @@ frodo() {
 
 int
 main(int argc, char *argv[]) {
-  unsigned long identifier;
-
   progname = basename(argv[0]);
 
   frodo();
