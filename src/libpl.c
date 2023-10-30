@@ -33,8 +33,8 @@ get_context(unsigned long *current, unsigned long *parent) {
 
 int
 get_context_frame_addr(unsigned long *current, unsigned long *parent) {
-  void *fp = __builtin_extract_return_addr(__builtin_frame_address(0));
-  void *pfp = __builtin_extract_return_addr(__builtin_frame_address(1));
+  void *fp = __builtin_frame_address(0);
+  void *pfp = __builtin_frame_address(1);
 
   *current = (unsigned long) fp;
   *parent = (unsigned long) pfp;
