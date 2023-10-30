@@ -21,7 +21,7 @@
 #if __GNUC__
 
 int
-_getframep(unsigned long *current, unsigned long *parent) {
+get_context(unsigned long *current, unsigned long *parent) {
   void *fp = __builtin_extract_return_addr(__builtin_frame_address(0));
   void *pfp = __builtin_extract_return_addr(__builtin_frame_address(1));
 
@@ -32,7 +32,7 @@ _getframep(unsigned long *current, unsigned long *parent) {
 }
 
 int
-get_context(unsigned long *current, unsigned long *parent) {
+_get_context(unsigned long *current, unsigned long *parent) {
   pthread_t tid = pthread_self();
 
   *current = (unsigned long) tid;
