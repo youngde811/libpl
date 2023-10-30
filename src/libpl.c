@@ -22,6 +22,17 @@
 
 int
 get_context(unsigned long *current, unsigned long *parent) {
+  void *fp = __builtin_extract_return_addr(__builtin_return_address(0));
+  void *pfp = __builtin_extract_return_addr(__builtin_return_address(1));
+
+  *current = (unsigned long) fp;
+  *parent = (unsigned long) pfp;
+  
+  return 0;
+}
+
+int
+get_context_old(unsigned long *current, unsigned long *parent) {
   void *fp = __builtin_extract_return_addr(__builtin_frame_address(0));
   void *pfp = __builtin_extract_return_addr(__builtin_frame_address(1));
 
