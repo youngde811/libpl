@@ -32,23 +32,13 @@ get_context(unsigned long *current, unsigned long *parent) {
 }
 
 int
-get_context_old(unsigned long *current, unsigned long *parent) {
+get_context_frame_addr(unsigned long *current, unsigned long *parent) {
   void *fp = __builtin_extract_return_addr(__builtin_frame_address(0));
   void *pfp = __builtin_extract_return_addr(__builtin_frame_address(1));
 
   *current = (unsigned long) fp;
   *parent = (unsigned long) pfp;
   
-  return 0;
-}
-
-int
-_get_context(unsigned long *current, unsigned long *parent) {
-  pthread_t tid = pthread_self();
-
-  *current = (unsigned long) tid;
-  *parent = (unsigned long) tid;
-
   return 0;
 }
 
