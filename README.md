@@ -68,7 +68,7 @@ Now, in your _Package.swift_ file, and a _systemLibrary_ target:
       ),
 ```
 
-Then, whatever target depends on _CLibpl_ requires it as a target. In our example, we only require the dependency on Linux:
+Then, whatever target depends on _CLibpl_, add its dependency. In our example, we only require the dependency on Linux:
 
 ```
 .target(
