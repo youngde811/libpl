@@ -58,7 +58,7 @@ module CLibpl [system] {
 #include </usr/include/plogic/libpl.h>
 ```
 
-Now, in your _Package.swift_ file, and a _systemLibrary_ target:
+Now, in your _Package.swift_ file, add a _systemLibrary_ target:
 
 ```
 .systemLibrary(
