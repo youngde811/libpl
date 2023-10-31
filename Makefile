@@ -18,7 +18,7 @@ DEBLIB := $(DEBDIR)/libpl
 VERSION := 1.0-1
 
 CC := gcc
-CFLAGS := -ansi -g -I$(INCDIR)
+CFLAGS := -ansi -g -I$(INCDIR) -fPIC
 
 SRC := $(wildcard $(SRCDIR)/*.c)
 OBJ := $(SRC:$(SRCDIR)/%.c=$(LIBDIR)/%.o)

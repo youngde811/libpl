@@ -12,6 +12,8 @@
 
 char *progname = NULL;
 
+extern int libpl_use_frameaddr;
+
 #define get_context_ids(tbuf, pbuf)                                     \
   do {                                                                  \
     if (get_context((tbuf), (pbuf)) != -1) {                            \

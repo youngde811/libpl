@@ -20,8 +20,12 @@
 
 #if __GNUC__
 
-int
-get_context(unsigned long *current, unsigned long *parent) {
+static int libpl_use_frameaddr = 1;
+
+#define use_frameaddr() libpl_use_frameaddr != 0
+
+static int
+_get_context(unsigned long *current, unsigned long *parent) {
   void *fp = __builtin_extract_return_addr(__builtin_return_address(0));
   void *pfp = __builtin_extract_return_addr(__builtin_return_address(1));
 
@@ -31,15 +35,39 @@ get_context(unsigned long *current, unsigned long *parent) {
   return 0;
 }
 
-int
-get_context_frame_addr(unsigned long *current, unsigned long *parent) {
-  void *fp = __builtin_frame_address(0);
-  void *pfp = __builtin_frame_address(1);
+static int
+_get_context_frame_addr(unsigned long *current, unsigned long *parent) {
+  void *fp = __builtin_frame_address(1);
+  void *pfp = __builtin_frame_address(2);
 
   *current = (unsigned long) fp;
   *parent = (unsigned long) pfp;
   
   return 0;
+}
+
+void
+use_return_address() {
+  libpl_use_frameaddr = 0;
+}
+
+void
+use_frame_address() {
+  libpl_use_frameaddr = 1;
+}
+
+int
+get_context_frame_addr(unsigned long *current, unsigned long *parent) {
+  return _get_context_frame_addr(current, parent);
+}
+
+int
+get_context(unsigned long *current, unsigned long *parent) {
+  if (use_frameaddr()) {
+    return _get_context_frame_addr(current, parent);
+  } else {
+    return _get_context(current, parent);
+  }
 }
 
 #else
