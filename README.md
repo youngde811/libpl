@@ -22,23 +22,68 @@ an example of how to assemble a Swift system library, please see the [CLibpl](ht
 project. To see how *CLibpl* is imported into a Swift application, see our [opentelemetry-swift](https://github.com/youngde811/opentelemetry-swift)
 fork; any of this project's _Package.swift_ files (yeah, there are several) will show you.
 
+Prior to building a Swift application needing _Libpl_, ensure the appropriate Debian package has been
+installed. Typically, you'll use the _dpkg_ command as so: `dpkg --install libpl_1.0-1_aarch.deb`
+for ARM64 processors, or `dpkg --install --force-architecture libpl_1.0-1_x86_64.deb` for amd64 and x86_64 machines.
+
+**NB**: The `--force-architecture` flag is only required when installing on a container running under _qemu_ emulation
+on ARM MacOS. Apple just **has** to be different...
+
 ### Example Package.swift ###
 
-First, add the _CLibpl_ project as a global dependency: `.package(url: "https://github.com/youngde811/CLibpl.git", from: "0.1.2"),`
+These examples apply only to Swift libraries that require access to _Libpl_ when compiling; client packages must only
+ensure that they link to _libpl.so_.
 
-Next, add the _CLibpl_ package as a target dependency:
+#### Swift Package Manager ####
+
+**NB**: Remember, this section applies **only** to Swift libraries requiring direct access to _Libpl_ when compiling. At
+present, the only package we have that requires a dependency is our _opentelemetry-swift_ fork.
+
+In your _Sources_ directory, create the directory _CLibpl_.
+
+In _CLibpl_, create these two files with the indicated contents:
+
+_module.modulemap_:
+
+```
+module CLibpl [system] {
+    umbrella header "libpl_umbrella.h"
+    link "pl"
+    export *
+}
+```
+
+*libpl_umbrella.h*
+```
+#include </usr/include/plogic/libpl.h>
+```
+
+Now, in your _Package.swift_ file, and a _systemLibrary_ target:
+
+```
+.systemLibrary(
+        name: "CLibpl",
+        pkgConfig: "libpl",
+        providers: [.apt(["libpl_1.0-1_x86_64.deb"])]
+      ),
+```
+
+Then, whatever target depends on _CLibpl_ requires it as a target. In our example, we only require the dependency on Linux:
 
 ```
 .target(
   name: "TaskSupport",
   dependencies: [
-    .product(name: "CLibpl", package: "CLibpl", condition: .when(platforms: [.linux]))
+    .product(name: "CLibpl", condition: .when(platforms: [.linux]))
   ]
 ),
 ```
 
-Then, make sure your project links with _libpl.so_. For example, if you're using a Makefile the following is a good
-example:
+#### Makefiles ####
+
+Client executables using Swift libraries employing _Libpl_ must link their executable targets to _libpl.so_. I generally
+do not use XCode, much preferring GNU Make; folks who use the former can likely figure out the linkage issue from the
+following Makefile example:
 
 ```
 link_flags := -Xlinker -L/usr/lib/plogic -Xlinker -lpl
