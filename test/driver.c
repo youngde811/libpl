@@ -43,10 +43,6 @@ frodo() {
 
   rval = bilbo();
 
-  get_context_ids(&this, &parent);
-
-  printf("%s: frodo(): the above frames should be the same as the first for %s above: %lu:%lu\n", progname, __FUNCTION__, this, parent);
-  
   return rval;
 }
 
@@ -54,6 +50,13 @@ int
 main(int argc, char *argv[]) {
   progname = basename(argv[0]);
 
+  unsigned long this;
+  unsigned long parent;
+
+  printf("%s: main() prints its frame addresses; then calls frodo(), which calls bilbo().\n", progname);
+
+  get_context_ids(&this, &parent);
+  
   frodo();
 
   exit(0);

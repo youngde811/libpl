@@ -37,8 +37,8 @@ _get_context(unsigned long *current, unsigned long *parent) {
 
 static int
 _get_context_frame_addr(unsigned long *current, unsigned long *parent) {
-  void *fp = __builtin_frame_address(1);
-  void *pfp = __builtin_frame_address(2);
+  void *fp = __builtin_frame_address(0);
+  void *pfp = __builtin_frame_address(1);
 
   *current = (unsigned long) fp;
   *parent = (unsigned long) pfp;
@@ -65,7 +65,7 @@ get_context(unsigned long *current, unsigned long *parent) {
   }
 }
 
-#else
+#else  /* not __GNUC__ */
 
 /* Only GNU gcc is supported as a compiler, due to the system-level builtin functions we must use */
 
