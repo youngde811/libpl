@@ -55,7 +55,7 @@ module CLibpl [system] {
 
 *libpl_umbrella.h*
 ```
-#include </usr/include/plogic/libpl.h>
+#include <plogic/libpl.h>
 ```
 
 Now, in your _Package.swift_ file, add a _systemLibrary_ target:
