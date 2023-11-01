@@ -20,7 +20,11 @@
 
 #if __GNUC__
 
+#if defined(__aarch64__)
 static context_type_t context_type = FRAME_ADDR;
+#else
+static context_type_t context_type = RETURN_ADDR;
+#endif
 
 #define use_frameaddr() context_type == FRAME_ADDR
 
