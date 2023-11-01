@@ -14,4 +14,6 @@ typedef enum {
 int get_context(unsigned long *current, unsigned long *parent);
 int get_context_frame_addr(unsigned long *current, unsigned long *parent);
 
+void with_context_type(context_type_t);
+
 #endif  /* _LIBPL_H */
