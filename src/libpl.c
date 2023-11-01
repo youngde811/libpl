@@ -20,9 +20,9 @@
 
 #if __GNUC__
 
-static int libpl_use_frameaddr = 1;
+static context_type_t context_type = FRAME_ADDR;
 
-#define use_frameaddr() libpl_use_frameaddr != 0
+#define use_frameaddr() context_type == FRAME_ADDR
 
 static int
 _get_context(unsigned long *current, unsigned long *parent) {
@@ -47,13 +47,8 @@ _get_context_frame_addr(unsigned long *current, unsigned long *parent) {
 }
 
 void
-use_return_address() {
-  libpl_use_frameaddr = 0;
-}
-
-void
-use_frame_address() {
-  libpl_use_frameaddr = 1;
+with_context_type(context_type_t ct) {
+  context_type = ct;
 }
 
 int
