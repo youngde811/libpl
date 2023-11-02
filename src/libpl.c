@@ -69,7 +69,7 @@ get_context(unsigned long *current, unsigned long *parent) {
   }
 }
 
-#else  /* not __GNUC__ */
+#else  /* not __GNUC__. Boom. */
 
 /* Only GNU gcc is supported as a compiler, due to the system-level builtin functions we must use */
 
