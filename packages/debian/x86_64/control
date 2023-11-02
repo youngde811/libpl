@@ -4,7 +4,7 @@ Version: 1.0-1
 Section: utils
 Source: libpl
 Priority: optional
-Architecture: x86_64
+Architecture: amd64
 Maintainer: David Young <youngde811@pobox.com>
 Description:  This package contains a small C library that
  supplies Linux functionality that tries to mimic some features
