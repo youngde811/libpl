@@ -86,6 +86,10 @@ mkpackage() {
     mv libpl.deb libpl_1.0-1_$arch.deb
     popd
 
+    rm -f docker/*.deb
+    rm $deb_workdir/*
+    rm -rf $deblib/usr
+
     return 0
 }
 
