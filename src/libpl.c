@@ -12,7 +12,6 @@
  * It remains to be seen what other architectures, such as AMD64, give us.
  */
 
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 
