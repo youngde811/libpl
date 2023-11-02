@@ -11,6 +11,7 @@ incdir=include
 pkgdir=packages
 debdir=$pkgdir/debian
 deblib=$debdir/libpl
+deb_workdir=$deblib/DEBIAN
 
 major=libpl-1.0.0.so
 base=libpl.so
@@ -59,13 +60,15 @@ popd() {
 }
 
 mkpackage() {
+    local arch=$(uname -m)
+
     local pkglib=usr/lib/plogic
     local pkginc=usr/include/plogic
     local pkgshare=usr/share/doc/libpl
-    local arch=$(uname -m)
+    local arch_srcdir=$debdir/$arch
 
-    echo "$progname: mkpackage()"
-
+    cp $arch_srcdir/* $deb_workdir
+    
     mkdir -p $deblib/$pkglib $deblib/$pkginc $deblib/$pkgshare
     objcopy --strip-debug --strip-unneeded $libdir/$major $deblib/$pkglib/$major
 
