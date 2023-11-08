@@ -46,7 +46,7 @@ _info() {
 repackage() {
     local pkg="$1"
     
-    ar x libpl_1.0-1_x86_64.deb
+    ar x $pkg
     zstd -d < control.tar.zst | xz > control.tar.xz
     zstd -d < data.tar.zst | xz > data.tar.xz
     ar -m -c -a sdsd ${pkg}_repacked.deb debian-binary control.tar.xz data.tar.xz
