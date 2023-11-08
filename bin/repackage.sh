@@ -9,7 +9,7 @@ set -o pipefail -o nounset
 
 usage() {
     cat <<EOF
-Usage: $progname [OPTIONS] PACKAGE
+Usage: $progname [OPTIONS] PACKAGE TARGET
 
 This script may be used to repackage our Libpl debian package for older debian
 distributions that don't support the dpkg-deb archiving algorithm.
@@ -45,11 +45,12 @@ _info() {
 
 repackage() {
     local pkg="$1"
+    local target="$2"
     
     ar x $pkg
     zstd -d < control.tar.zst | xz > control.tar.xz
     zstd -d < data.tar.zst | xz > data.tar.xz
-    ar -m -c -a sdsd ${pkg}_repacked.deb debian-binary control.tar.xz data.tar.xz
+    ar -m -c -a sdsd $target debian-binary control.tar.xz data.tar.xz
 
     ls -l
 
@@ -69,11 +70,12 @@ done
 
 shift $((OPTIND - 1))
 
-[[ $# == 1 ]] || _error "improper positional arguments: $@"
+[[ $# == 2 ]] || _error "improper positional arguments: $@"
 
 package="$1"
+target="$2"
 
-repackage $package
+repackage $package $target
 
 exit 0
 
