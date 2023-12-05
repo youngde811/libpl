@@ -14,6 +14,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 #include "libpl.h"
 
@@ -50,22 +51,31 @@ _get_context_frame_addr(unsigned long *current, unsigned long *parent) {
 }
 
 void
-with_context_type(context_type_t ct) {
+pl_with_context_type(context_type_t ct) {
   context_type = ct;
 }
 
 int
-get_context_frame_addr(unsigned long *current, unsigned long *parent) {
+pl_get_context_frame_addr(unsigned long *current, unsigned long *parent) {
   return _get_context_frame_addr(current, parent);
 }
 
 int
-get_context(unsigned long *current, unsigned long *parent) {
+pl_get_context(unsigned long *current, unsigned long *parent) {
   if (use_frameaddr()) {
     return _get_context_frame_addr(current, parent);
   } else {
     return _get_context(current, parent);
   }
+}
+
+int
+pl_get_thread_id(unsigned long *id) {
+  pthread_t pid = pthread_self();
+
+  *id = (unsigned long) pid;
+
+  return 0;
 }
 
 #else  /* not __GNUC__. Boom. */

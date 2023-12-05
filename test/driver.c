@@ -14,7 +14,7 @@ char *progname = NULL;
 
 #define get_context_ids(tbuf, pbuf)                                     \
   do {                                                                  \
-    if (get_context((tbuf), (pbuf)) != -1) {                            \
+    if (pl_get_context((tbuf), (pbuf)) != -1) {                            \
       printf("%s: %s: this: %lu; parent: %lu\n", progname, __FUNCTION__, (*tbuf), (*pbuf)); \
     } else {                                                            \
       printf("%s: %s: failed to retrieve stack pointer!\n", progname, __FUNCTION__); \
@@ -52,12 +52,17 @@ main(int argc, char *argv[]) {
 
   unsigned long this;
   unsigned long parent;
+  unsigned long tid;
 
   printf("%s: main() prints its frame addresses; then calls frodo(), which calls bilbo().\n", progname);
 
   get_context_ids(&this, &parent);
-  
+
   frodo();
+
+  pl_get_thread_id(&tid);
+
+  printf("%s: main(): thread id: %ld\n", progname, tid);
 
   exit(0);
 }
